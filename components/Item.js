@@ -1,13 +1,19 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign'
 
 const TodoListItem = ({id, text, check, color, week, work, onRemove, onCheck}) => {
+  const [displayText, setDisplayText] = useState(text)
+  useEffect(()=>{
+    console.log("displayText",displayText)
+  },[displayText])
+
+  
   return (
     <View>
     {color ? 
     (  <View style={styles.container}>
-        <TouchableOpacity onPressOut={onCheck(id)}>
+        <TouchableOpacity onPressOut={onCheck(id, work)}>
             {check ? ( 
             <View style={styles.completeCircle}>
                 <Icon name="circledowno" size={30} color="#115131" />
@@ -25,17 +31,18 @@ const TodoListItem = ({id, text, check, color, week, work, onRemove, onCheck}) =
             styles.text,
             check ? styles.strikeText : styles.unstrikeText,]}
         > 
-            {text} 
+            {displayText} 
         </Text>
+        <Text>{displayText} </Text>
         <TouchableOpacity style={styles.buttonContainer}>
-            <Text style={styles.buttonText} onPress={onRemove(id)}>
+            <Text style={styles.buttonText} onPress={onRemove(id, work)}>
                 <Icon name="delete" size={30} color="#642918" />
             </Text>
         </TouchableOpacity>
     </View>
     ):
     ( <View style={styles.container2}>
-        <TouchableOpacity onPressOut={onCheck(id)}>
+        <TouchableOpacity onPressOut={onCheck(id, work)}>
             {check ? ( 
             <View style={styles.completeCircle}>
                 <Icon name="circledowno" size={30} color="#115131" />
@@ -51,10 +58,11 @@ const TodoListItem = ({id, text, check, color, week, work, onRemove, onCheck}) =
         </Text>
         <Text style={[
             styles.text,
-            check ? styles.strikeText : styles.unstrikeText,]}
+            check ? styles.strikeText : styles.unstrikeText]}
         > 
-            {text} 
+            {displayText} 
         </Text>
+        
         <TouchableOpacity style={styles.buttonContainer}>
             <Text style={styles.buttonText} onPress={onRemove(id)}>
                 <Icon name="delete" size={30} color="#642918" />
@@ -72,18 +80,22 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     borderBottomColor: '#ab3c49',
-    borderBottomWidth: StyleSheet.hairlineWidth,
+    borderBottomWidth: 5,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+    width:500,
+    //backgroundColor:'#ab3c49'
   },
   container2: {
     flex: 1,
     borderBottomColor: '#539a02',
-    borderBottomWidth: StyleSheet.hairlineWidth,
+    borderBottomWidth: 5,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+    width:500,
+    //backgroundColor:'#539a02'
   },
   text: {
     flex: 5,
